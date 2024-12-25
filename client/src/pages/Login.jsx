@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import useUserStore from "../store/user";
 
 export default function Login() {
 
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState(null);
+    const addUser = useUserStore((state) => state.addUser);
     // const [success, setSuccess] = useState(false);
 
     // const userRef = useRef();
@@ -16,14 +18,19 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await API.post("user/login", { email, password });
+            const res = await API.post("/user/login", { email, password });
             localStorage.setItem('token', res.data.token);
+            const userData = {
+                fullName: res.data.fullName,
+                email: res.data.email,
+            }
             if (res) {
+                addUser(userData);
                 setErrorMsg("");
                 setEmail("");
                 setPassword("");
+                navigate("/");
             }
-            navigate("/");
         } catch (err) {
             setErrorMsg(err.response.data.message);
         }

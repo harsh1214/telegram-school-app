@@ -1,14 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import API from "../api/axios";
+import useUserStore from "../store/user";
 
 export default function Login() {
 
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
+    const addUser = useUserStore((state) => state.addUser);
     // const [success, setSuccess] = useState(false);
 
     // const userRef = useRef();
@@ -17,10 +19,15 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await API.post("/user/register", { name, email, password });
+            const res = await API.post("/user/register", { fullName, email, password });
             localStorage.setItem('token', res.data.token);
+            const userData = {
+                fullName,
+                email,
+            }
             if (res) {
-                setName("");
+                addUser(userData);
+                setFullName("");
                 setErrorMsg("");
                 setEmail("");
                 setPassword("");
@@ -45,7 +52,7 @@ export default function Login() {
                         <div>
                             <label htmlFor="fullName" className="block text-sm/6 font-medium text-gray-900">Full Name</label>
                             <div className="mt-2">
-                                <input onChange={(e) => { setName(e.target.value); setErrorMsg("") }} value={name} type="text" name="fullName" id="fullName" autoComplete="fullName" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input onChange={(e) => { setFullName(e.target.value); setErrorMsg("") }} value={fullName} type="text" name="fullName" id="fullName" autoComplete="fullName" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                             </div>
                         </div>
                         <div>
