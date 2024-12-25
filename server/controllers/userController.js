@@ -14,9 +14,7 @@ const salt = bcrypt.genSaltSync(10);
 // };
 
 export const createUser = async (req, res) => {
-    const date = new Date();
     var user = req.body;
-    user.date = date;
     if (!user.firstName || !user.lastName || !user.email || !user.password) {
         if (!user.firstName) {
             return res.status(400).json({ message: 'First Name is required.' });
@@ -143,11 +141,16 @@ export const verifyOtp = async (req, res) => {
     try {
         const findUser = await User.findOne({ where: { email: user.email }}).catch((err) => { console.log(err); });;
         if(findUser){
-            if(user.OTP == findUser.otp){
-                return res.status(201).json({ success: true, message: "OTP is Correct" });
+            if(findUser.dataValues.otp){
+                if(user.OTP == findUser.dataValues.otp){
+                    return res.status(201).json({ success: true, message: "OTP is Correct" });
+                }
+                else{
+                    return res.status(500).json({ success: false, message: 'OTP is Incorrect' });
+                }
             }
             else{
-                return res.status(500).json({ success: false, message: 'OTP is Incorrect' });
+                return res.status(500).json({ success: false, message: 'OTP is not Generated' });
             }
         }
         else{
@@ -167,9 +170,9 @@ export const changePassword = async (req, res) => {
     try {
         const findUser = await User.findOne({ where: { email: user.email }}).catch((err) => { console.log(err); });;
         if(findUser){
-            if(user.OTP == findUser.otp){
+            if(user.OTP == findUser.dataValues.otp){
                 const encPass = await bcrypt.hash(user.password, salt);
-                findUser.password = encPass;
+                findUser.dataValues.password = encPass;
                 await findUser.save();
                 return res.status(201).json({ success: true, message: "Password Changed" });
             }

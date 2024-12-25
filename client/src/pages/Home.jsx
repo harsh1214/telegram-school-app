@@ -26,7 +26,7 @@ export default function Home() {
             <div className="w-full text-white">
                 <div className="container mx-auto lg:px-8 px-4">
                     <div className="w-full text-center">
-                        <h2 className="text-2xl font-bold">Hii, {user.fullName}</h2>
+                        <h2 className="text-2xl font-bold">Hii, {user.firstName}</h2>
                         <p className="mt-4 text-xl">Welcome to Telegram app where you can take test for free.</p>
                     </div>
                     <div className="w-full mt-12">
