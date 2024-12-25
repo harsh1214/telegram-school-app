@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 // import { useState } from "react";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import Test from "./pages/Test";
 
 export default function App() {
 
@@ -15,11 +17,13 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route element={
                         <ProtectedRoutes>
                             <Outlet />            
                         </ProtectedRoutes>
                     }>
+                    <Route path="/test/:subject" element={<Test />} />
                     <Route path="/" element={<Home />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

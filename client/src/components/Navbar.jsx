@@ -33,9 +33,9 @@ export default function Navbar() {
                                 <img onClick={handleMenu} src={userImage} alt="" className="w-[32px] h-[32px] object-cover object-center rounded-full hover:cursor-pointer" />
                             </div>
                         </div>
-                        <div className={openMenu ? "w-[120px] rounded-md hidden flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-neutral-200 p-2 py-4" : "w-[120px] rounded-md flex flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-neutral-200 p-2 py-4"}>
-                            <p className="sm:text-md text-sm">{user.fullName}</p>
-                            <button onClick={handleLogout} className="sm:text-md text-xs inline-flex items-center bg-neutral-100 border-0 py-2 px-4 focus:outline-none hover:bg-neutral-300 rounded shadow">Log Out</button>
+                        <div className={openMenu ? "w-[120px] rounded-md hidden flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-[#782069] text-white p-2 py-4" : "w-[120px] rounded-md flex flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-[#782069] text-white p-2 py-4"}>
+                            <p className="sm:text-md text-sm font-semibold">{user.fullName}</p>
+                            <button onClick={handleLogout} className="sm:text-md text-xs inline-flex items-center bg-[#f27022] border-0 py-2 px-4 focus:outline-none hover:bg-[#f27022aa] rounded shadow">Log Out</button>
                         </div>
                     </div>
                 </div>

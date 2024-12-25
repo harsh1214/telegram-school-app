@@ -1,6 +1,7 @@
 import db from "../models/index.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { sendMail } from "../config/nodeMailer.js";
 const User = db.User;
 const salt = bcrypt.genSaltSync(10);
 
@@ -85,73 +86,96 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const forgotPassword = async (req, res) => {
+    var user = req.body;
+    if (!user.email) {
+        return res.status(400).json({ message: 'Email is required.' });
+    }
+    try {
+        const findUser = await User.findOne({ where: { email: user.email }}).catch((err) => { console.log(err); });;
+        if(findUser){
+            const generatedOTP = Math.floor(100000 + Math.random() * 900000);
+            const to = user.email;
+            const subject = "OTP Request from Telegram App";
+            const message = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                    <h4>Hi ${findUser.fullName},</h4>
+                    <p>You request OTP is ${generatedOTP}</p>
+                </body>
+                </html>
+            `;
+            const mail = await sendMail(to, subject, message);
+            if(mail){
+                findUser.otp = generatedOTP;
+                await findUser.save();
+                return res.status(201).json({ success: true, message: "OTP Send" });
+            }
+            else{
+                return res.status(500).json({ message: 'Something Went Wrong!' });
+            }
+        }
+        else{
+            res.status(400).json({ message: "User Doesn't Exist with this Email" });
+        }
+    }
+    catch (error) {
+        res.status(400).json(error)
+    }
+}
 
-// exports.createUser = async (req, res) => {
-//     try {
-//         const { name, email, password } = req.body;
-//         const date = new Date();
-//         if (!name || !email || !password) {
-//             if(!name){
-//                 return res.status(400).json({ message: 'Name is required.' });
-//             }
-//             if(!email){
-//                 return res.status(400).json({ message: 'Email is required.' });
-//             }
-//             if(!password){
-//                 return res.status(400).json({ message: 'Password is required.' });
-//             }
-//         }
-//         const userExist = await fetchUserByEmail(email);
-//         if(userExist){
-//             return res.status(500).json({ message: 'User already exist with this email' });
-//         }
-//         else{
-//             const encPass = await bcrypt.hash(password, salt);
-//             const result = await pool.query('INSERT INTO users (name, email, password, createdAt) VALUES (?, ?, ?, ?)', [name, email, encPass, date]);
-//             if(result){
-//                 const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "2h" });
-//                 res.status(201).json({ success: true, message: "User Created", token});
-//             }
-//             else{
-//                 return res.status(500).json({ message: 'Something went Wrong from Our Side! Please contact the admin' });
-//             }
-//         }
-//     } catch (error) {
-//         res.status(500).json({ message: 'Internal server error', error });
-//     }
-// }
+export const verifyOtp = async (req, res) => {
+    var user = req.body;
+    if (!user.OTP) {
+        return res.status(400).json({ message: 'OTP is required.' });
+    }
+    try {
+        const findUser = await User.findOne({ where: { email: user.email }}).catch((err) => { console.log(err); });;
+        if(findUser){
+            if(user.OTP == findUser.otp){
+                return res.status(201).json({ success: true, message: "OTP is Correct" });
+            }
+            else{
+                return res.status(500).json({ success: false, message: 'OTP is Incorrect' });
+            }
+        }
+        else{
+            res.status(400).json({ message: "User Doesn't Exist with this Email" });
+        }
+    }
+    catch (error) {
+        res.status(400).json(error)
+    }
+}
 
-// exports.loginUser = async (req, res) => {
-//     try {
-//         const { email, password } = req.body;
-//         if (!email || !password) {
-//             if(!email){
-//                 return res.status(400).json({ message: 'Email is required.' });
-//             }
-//             if(!password){
-//                 return res.status(400).json({ message: 'Password is required.' });
-//             }
-//         }
-//         const userExist = await fetchUserByEmail(email);
-//         if(!userExist){
-//             return res.status(500).json({ message: "User Doesn't Exist" });
-//         }
-//         else{
-//             const user = await fetchUserByEmail(email);
-//             const checkPass = await bcrypt.compare(password, user.password);
-//             if(user.email == email && checkPass){
-//                 const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "2h" });
-//                 const options = {
-//                     expires: new Date(Date.now() + (1 * 24 * 60 * 60 * 1000)),
-//                     httpOnly: true,
-//                 };
-//                 res.status(201).cookie("token", token, options).json({ success: true, message: "Logged In", token });
-//             }
-//             else{
-//                 return res.status(500).json({ message: 'Password is Incorrect' });
-//             }
-//         }
-//     } catch (error) {
-//         res.status(500).json({ message: 'Internal server error', error });
-//     }
-// }
+export const changePassword = async (req, res) => {
+    var user = req.body;
+    if (!user.password) {
+        return res.status(400).json({ message: 'Password is required.' });
+    }
+    try {
+        const findUser = await User.findOne({ where: { email: user.email }}).catch((err) => { console.log(err); });;
+        if(findUser){
+            if(user.OTP == findUser.otp){
+                const encPass = await bcrypt.hash(user.password, salt);
+                findUser.password = encPass;
+                await findUser.save();
+                return res.status(201).json({ success: true, message: "Password Changed" });
+            }
+            else{
+                return res.status(500).json({ message: 'Something Went Wrong! ' });
+            }
+        }
+        else{
+            res.status(400).json({ message: "User Doesn't Exist with this Email" });
+        }
+    }
+    catch (error) {
+        res.status(400).json(error)
+    }
+}

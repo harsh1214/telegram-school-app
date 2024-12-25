@@ -15,6 +15,10 @@ const User = (sequelize, Sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        otp: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
     });
     return User;
 }
