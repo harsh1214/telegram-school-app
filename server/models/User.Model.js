@@ -2,7 +2,11 @@ import { DataTypes } from "sequelize";
 
 const User = (sequelize, Sequelize) => {
     const User = sequelize.define("users", {
-        fullName: {
+        firstName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        lastName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -12,6 +16,10 @@ const User = (sequelize, Sequelize) => {
             unique: true,
         },
         password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        phoneNumber: {
             type: DataTypes.STRING,
             allowNull: false,
         },

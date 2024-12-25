@@ -6,9 +6,11 @@ import useUserStore from "../store/user";
 export default function Login() {
 
     const navigate = useNavigate();
-    const [fullName, setFullName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const addUser = useUserStore((state) => state.addUser);
     // const [success, setSuccess] = useState(false);
@@ -19,18 +21,21 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await API.post("/user/register", { fullName, email, password });
+            const res = await API.post("/user/register", { firstName, lastName, email, phoneNumber, password });
             localStorage.setItem('token', res.data.token);
             const userData = {
-                fullName,
+                firstName,
+                lastName,
                 email,
             }
             if (res) {
                 addUser(userData);
-                setFullName("");
+                setFirstName("");
+                setLastName("");
                 setErrorMsg("");
                 setEmail("");
                 setPassword("");
+                setPhoneNumber("");
             }
             navigate("/");
         } catch (err) {
@@ -50,15 +55,27 @@ export default function Login() {
                             <p className={errorMsg ? "text-center text-red-500 font-bold text-lg" : "hidden"} aria-live="assertive">{errorMsg}</p>
                         </div>
                         <div>
-                            <label htmlFor="fullName" className="block text-sm/6 font-medium text-gray-900">Full Name</label>
+                            <label htmlFor="firstName" className="block text-sm/6 font-medium text-gray-900">First Name</label>
                             <div className="mt-2">
-                                <input onChange={(e) => { setFullName(e.target.value); setErrorMsg("") }} value={fullName} type="text" name="fullName" id="fullName" autoComplete="fullName" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input onChange={(e) => { setFirstName(e.target.value); setErrorMsg("") }} value={firstName} type="text" name="firstName" id="firstName" autoComplete="firstName" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="lastName" className="block text-sm/6 font-medium text-gray-900">Last Name</label>
+                            <div className="mt-2">
+                                <input onChange={(e) => { setLastName(e.target.value); setErrorMsg("") }} value={lastName} type="text" name="lastName" id="lastName" autoComplete="lastName" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                             </div>
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
                             <div className="mt-2">
                                 <input onChange={(e) => { setEmail(e.target.value); setErrorMsg("") }} value={email} type="email" name="email" id="email" autoComplete="email" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                            </div>
+                        </div>
+                        <div>
+                            <label htmlFor="phoneNumber" className="block text-sm/6 font-medium text-gray-900">Phone Number</label>
+                            <div className="mt-2">
+                                <input onChange={(e) => { setPhoneNumber(e.target.value); setErrorMsg("") }} value={phoneNumber} type="text" name="phoneNumber" id="phoneNumber" autoComplete="phoneNumber" className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
                             </div>
                         </div>
                         <div>

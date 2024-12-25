@@ -34,7 +34,7 @@ export default function Navbar() {
                             </div>
                         </div>
                         <div className={openMenu ? "w-[120px] rounded-md hidden flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-[#782069] text-white p-2 py-4" : "w-[120px] rounded-md flex flex-col items-center justify-end gap-4 absolute right-[10px] top-[36px] z-[3] bg-[#782069] text-white p-2 py-4"}>
-                            <p className="sm:text-md text-sm font-semibold">{user.fullName}</p>
+                            <p className="sm:text-md text-sm font-semibold">{user.firstName} {user.lastName}</p>
                             <button onClick={handleLogout} className="sm:text-md text-xs inline-flex items-center bg-[#f27022] border-0 py-2 px-4 focus:outline-none hover:bg-[#f27022aa] rounded shadow">Log Out</button>
                         </div>
                     </div>

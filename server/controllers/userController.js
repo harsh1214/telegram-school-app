@@ -17,12 +17,18 @@ export const createUser = async (req, res) => {
     const date = new Date();
     var user = req.body;
     user.date = date;
-    if (!user.fullName || !user.email || !user.password) {
-        if (!user.fullName) {
-            return res.status(400).json({ message: 'Name is required.' });
+    if (!user.firstName || !user.lastName || !user.email || !user.password) {
+        if (!user.firstName) {
+            return res.status(400).json({ message: 'First Name is required.' });
+        }
+        if (!user.lastName) {
+            return res.status(400).json({ message: 'Last Name is required.' });
         }
         if (!user.email) {
             return res.status(400).json({ message: 'Email is required.' });
+        }
+        if (!user.phoneNumber) {
+            return res.status(400).json({ message: 'Phone Number is required.' });
         }
         if (!user.password) {
             return res.status(400).json({ message: 'Password is required.' });

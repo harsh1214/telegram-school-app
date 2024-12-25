@@ -7,6 +7,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import NotFound from "./pages/NotFound";
 import ForgotPassword from "./pages/ForgotPassword";
 import Test from "./pages/Test";
+import NavLayout from "./components/NavLayout";
 
 export default function App() {
 
@@ -20,11 +21,17 @@ export default function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route element={
                         <ProtectedRoutes>
-                            <Outlet />            
+                            <Outlet />
                         </ProtectedRoutes>
                     }>
-                    <Route path="/test/:subject" element={<Test />} />
-                    <Route path="/" element={<Home />} />
+                    <Route element={
+                            <NavLayout>
+                                <Outlet />
+                            </NavLayout>
+                        }>
+                        <Route path="/test/:subject" element={<Test />} />
+                        <Route path="/" element={<Home />} />
+                    </Route>
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>
