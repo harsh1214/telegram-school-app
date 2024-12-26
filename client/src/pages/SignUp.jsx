@@ -44,7 +44,7 @@ export default function Login() {
     };
 
     return (
-        <div className="w-full relative z-[1] min-h-screen flex items-center justify-center bg-gradient-to-r from-[#8A2387] via-[#E94057] to-[#F27121]">
+        <div className="w-full relative z-[1] sm:min-h-screen min-h-svh flex items-center justify-center bg-gradient-to-r from-[#8A2387] via-[#E94057] to-[#F27121]">
             <div className="w-full max-w-[450px] bg-white rounded border-[1px] shadow border-neutral-200 relative z-[2] flex min-h-full flex-col justify-center mx-2 my-32 px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-0 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign Up to for new account</h2>

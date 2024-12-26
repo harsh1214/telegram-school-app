@@ -21,7 +21,7 @@ export default function Home() {
     }
 
     return (
-        <div className="w-full h-full min-h-screen flex flex-col items-center justify-center relative z-[1] py-10 bg-gradient-to-b from-[#8A2387] via-[#E94057] to-[#F27121]">
+        <div className="w-full h-full sm:min-h-screen min-h-svh flex flex-col items-center justify-center relative z-[1] py-10 bg-gradient-to-b from-[#8A2387] via-[#E94057] to-[#F27121]">
             <div className="mt-[80px]"></div>
             <div className="w-full text-white">
                 <div className="container mx-auto lg:px-8 px-4">

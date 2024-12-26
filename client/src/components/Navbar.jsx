@@ -21,7 +21,7 @@ export default function Navbar() {
     }
 
     return (
-        <header className="w-full text-black bg-neutral-950 bg-opacity-20 body-font shadow-md fixed z-[4] top-0 left-0">
+        <header className="w-full text-black bg-neutral-950 bg-opacity-20 body-font shadow-md absolute z-[4] top-0 left-0">
             <div className="container mx-auto">
                 <div className="flex flex-wrap justify-between p-5 py-6 flex-row items-center">
                     <a className="flex title-font font-medium items-center text-white mb-0">

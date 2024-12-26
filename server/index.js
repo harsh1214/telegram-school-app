@@ -4,8 +4,8 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import sequelize from "./config/db.js";
 import { router } from "./routes/User.js";
-
 const port = 3000;
+
 
 const app = express();
 

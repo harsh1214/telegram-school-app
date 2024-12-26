@@ -75,7 +75,7 @@ export const loginUser = async (req, res) => {
                     expires: new Date(Date.now() + (2 * 60 * 60 * 1000)),
                     httpOnly: true,
                 };
-                return res.status(201).cookie("token", token, options).json({ success: true, message: "Logged In", fullName: findUser.dataValues.fullName, email: user.email, token });
+                return res.status(201).cookie("token", token, options).json({ success: true, message: "Logged In", firstName: findUser.dataValues.firstName, lastName: findUser.dataValues.lastName, email: user.email, token });
             }
             else{
                 return res.status(500).json({ message: 'Password is Incorrect' });
